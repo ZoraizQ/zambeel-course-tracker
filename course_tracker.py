@@ -23,7 +23,8 @@ finish_btn_locator = 'DERIVED_REGFRM1_SSR_PB_SUBMIT'
 
 notif_title = course_id + ' IS OPEN'
 notif_body = 'Your course %s is now open. Attempting to enroll.' % course_id
-status = ""
+status = ''
+path = ''
 # try:
 
 print("INITIATING COURSE TRACKER FOR %s TO GET %s" % (username, course_id))
@@ -31,7 +32,15 @@ print("INITIATING COURSE TRACKER FOR %s TO GET %s" % (username, course_id))
 chrome_options = webdriver.ChromeOptions()
 prefs = {"profile.managed_default_content_settings.images": 2}
 chrome_options.add_experimental_option("prefs", prefs)
-browser = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
+try:
+  path = ChromeDriverManager().install()
+except:
+  pass
+finally:
+  print("Using chromdriver.exe that came with the script for Windows...")
+  path = './chromedriver.exe'
+
+browser = webdriver.Chrome(executable_path=path, options=chrome_options)
 browser.get(main_url)
 wait = WebDriverWait(browser, 3)
 
