@@ -8,6 +8,7 @@ Track a closed course on Zambeel automatically and enroll as soon as it opens na
 - Auto enroll course when it is found to be open, else just refresh the page.
 - Auto login and redirect to Add Class page
 - Disabled images for faster web navigation and less resources used
+- System notification when the course is found to be open (notify2 used)
 
 ## Instructions
 - Login to [Zambeel](https://zambeel.lums.edu.pk/) manually first, and go to Enrollment > select the appropriate term (e.g. Fall 2020-21) > Add Class and copy the current URL from the browser. Replace this URL for post_login_url inside the main script course_tracker.py.
