@@ -11,6 +11,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 username = input("Username: ")
 password = getpass("Password: ")
+course_id = input("Course (exact title  on Zambeel e.g. 'CS 466-S1'): ")
+
 main_url = 'https://zambeel.lums.edu.pk/'
 
 print("Make sure you have changed the post_login_url to your Add Class page.")
@@ -19,7 +21,6 @@ post_login_url = 'https://zambeel.lums.edu.pk/psp/ps/EMPLOYEE/SA/c/SA_LEARNER_SE
 proceed_btn_locator = 'DERIVED_REGFRM1_LINK_ADD_ENRL$82$'
 finish_btn_locator = 'DERIVED_REGFRM1_SSR_PB_SUBMIT'
 
-course_id = 'CS 466-S1'
 notif_title = course_id + ' IS OPEN'
 notif_body = 'Your course %s is now open. Attempting to enroll.' % course_id
 status = ""
