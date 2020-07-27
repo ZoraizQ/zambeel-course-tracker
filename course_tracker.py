@@ -1,6 +1,7 @@
 import time
 import random
 import notify2
+from getpass import getpass
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -9,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 username = input("Username: ")
-password = input("Password: ")
+password = getpass("Password: ")
 main_url = 'https://zambeel.lums.edu.pk/'
 
 print("Make sure you have changed the post_login_url to your Add Class page.")
