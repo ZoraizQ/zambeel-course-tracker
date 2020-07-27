@@ -1,4 +1,4 @@
-# zambeel_course_tracker
+# Zambeel Course Tracker
 Track a closed course on Zambeel automatically and enroll as soon as it opens naturally. Provide your Zambeel credentials, Add Class page UR and exact Course ID to make it work.
 
 ![ss](ss.png)
