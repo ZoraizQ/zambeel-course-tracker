@@ -17,4 +17,6 @@ Track a closed course on Zambeel automatically and enroll as soon as it opens na
 pip3 install -r requirements.txt 
 python3 course_tracker.py
 ```
-- Provide your Zambeel credentials and course ID to track as prompted. Hope this helps!
+- Provide your Zambeel credentials and course ID to track as prompted. 
+
+Hope this helps! Suggest edits and feel free to pinpoint issues so we can keep this script up-to-date.
