@@ -35,8 +35,6 @@ chrome_options.add_experimental_option("prefs", prefs)
 try:
   path = ChromeDriverManager().install()
 except:
-  pass
-finally:
   print("Using chromdriver.exe that came with the script for Windows...")
   path = './chromedriver.exe'
 
