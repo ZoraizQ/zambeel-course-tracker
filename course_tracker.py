@@ -11,8 +11,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 main_url = 'https://zambeel.lums.edu.pk/'
 post_login_url = 'https://zambeel.lums.edu.pk/psp/ps/EMPLOYEE/SA/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL?Page=SSR_SSENRL_CART&Action=A&ACAD_CAREER=UGDS&EMPLID=19206&INSTITUTION=LUMS&STRM=2001'
-proceed_btn_locator = 'DERIVED_REGFRM1_LINK_ADD_ENRL$82$'
-finish_btn_locator = 'DERIVED_REGFRM1_SSR_PB_SUBMIT'
 
 username = input("Username: ")
 password = getpass("Password: ")
@@ -89,11 +87,12 @@ for i, course_id in enumerate(course_ids):
       browser.get(post_login_url)
       browser.switch_to.frame("ptifrmtgtframe")
       
-      proceed_btn = WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.ID, proceed_btn_locator)))
+      proceed_btn = WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.ID, 'DERIVED_REGFRM1_LINK_ADD_ENRL$82$')))
       proceed_btn.click()
 
       finish_btn = WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.ID, finish_btn_locator)))
       finish_btn.click()
+      break
     except RuntimeError as re:
       print("Could not enroll.", re)
 
