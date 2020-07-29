@@ -9,25 +9,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-username = input("Username: ")
-password = getpass("Password: ")
-course_id = input("Course (exact title  on Zambeel e.g. 'CS 466-S1'): ")
-
 main_url = 'https://zambeel.lums.edu.pk/'
-
-print("Make sure you have changed the post_login_url to your Add Class page.")
 post_login_url = 'https://zambeel.lums.edu.pk/psp/ps/EMPLOYEE/SA/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL?Page=SSR_SSENRL_CART&Action=A&ACAD_CAREER=UGDS&EMPLID=19206&INSTITUTION=LUMS&STRM=2001'
-
 proceed_btn_locator = 'DERIVED_REGFRM1_LINK_ADD_ENRL$82$'
 finish_btn_locator = 'DERIVED_REGFRM1_SSR_PB_SUBMIT'
 
-notif_title = course_id + ' IS OPEN'
-notif_body = 'Your course %s is now open. Attempting to enroll.' % course_id
-status = ''
-path = ''
-# try:
+username = input("Username: ")
+password = getpass("Password: ")
+course_ids_raw = input("Courses (comma delimited list of exact titles as on Zambeel e.g. 'CS 370-S1, CS 466-S1'): ").split(',')
+course_ids = list(map(lambda s: s.strip(), course_ids_raw)) # strip all string spaces L&R
 
-print("INITIATING COURSE TRACKER FOR %s TO GET %s" % (username, course_id))
+print("Make sure you have changed the post_login_url to your Add Class page inside the script.")
+statuses = ['' for x in range(len(course_ids))] # statuses of all courses
+path = ''
+
+
+print("INITIATING COURSE TRACKER FOR %s TO GET %s" % (username, course_ids))
 
 chrome_options = webdriver.ChromeOptions()
 prefs = {"profile.managed_default_content_settings.images": 2}
@@ -55,36 +52,50 @@ pwd.send_keys(password)
 pwd.send_keys(Keys.RETURN)
 # logs in
 
-while (status != "Open"): 
+while not ("Open" in statuses): 
   browser.get(post_login_url)
   browser.switch_to.frame("ptifrmtgtframe")
 
-  course_link = browser.find_element_by_partial_link_text(course_id)
-  # status_div is available, get image inside
-  print(course_link.get_attribute("text"))
+  for i, course_id in enumerate(course_ids):
+    try:
+      course_link = browser.find_element_by_partial_link_text(course_id)
+      course_row = course_link.find_element_by_xpath("./../../../../..")
 
-  # print(table_div)
-  course_row = course_link.find_element_by_xpath("./../../../../..")
-  status_img = course_row.find_element_by_xpath("//img[@alt='Closed']")
-  status = status_img.get_attribute("alt")
-  print(status)
+      # status_div is available, get image inside
+      status_img = course_row.find_element_by_xpath("//img[@alt='Closed']")
+      statuses[i] = status_img.get_attribute("alt")
+      print(course_link.get_attribute("text"), "is", statuses[i])
+    except:
+      print("An error occurred checking for the course %s. Make sure it exists in your cart and was entered in the correct format." % course_id)
+    
+  if (not "Open" in statuses):
+    minutes = random.randint(5, 20) # between 5 to 20 minutes
+    delay = 60 * minutes
 
-  minutes = random.randint(5, 20) # between 5 to 20 minutes
-  delay = 60 * minutes
-
-  print("Trying again in %d minutes..." % minutes)
-  time.sleep(delay)
+    print("Trying again in %d minutes..." % minutes)
+    time.sleep(delay)
 
 
-print(notif_title)
-notify2.init(notif_title)
-n = notify2.Notification(notif_title, notif_body)
-n.show()
+for i, course_id in enumerate(course_ids):
+  if (statuses[i] == "Open"):
+    notif_title = course_id + ' IS OPEN'
+    notif_body = 'Your course %s is now open. Attempting to enroll.' % course_id
+    print(notif_title)
+    notify2.init(notif_title)
+    n = notify2.Notification(notif_title, notif_body)
+    n.show()
 
-proceed_btn = browser.find_element_by_id(proceed_btn_locator)
-proceed_btn.click()
+    try:
+      browser.get(post_login_url)
+      browser.switch_to.frame("ptifrmtgtframe")
+      
+      proceed_btn = WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.ID, proceed_btn_locator)))
+      proceed_btn.click()
 
-finish_btn = WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.ID, finish_btn_locator)))
-finish_btn.click()
+      finish_btn = WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.ID, finish_btn_locator)))
+      finish_btn.click()
+    except RuntimeError as re:
+      print("Could not enroll.", re)
+
 
 browser.close()
