@@ -1,6 +1,9 @@
 import time
 import random
-import notify2
+try:
+  import notify2
+except:
+  print("Notifications are available on Linux only.")
 from getpass import getpass
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -76,13 +79,16 @@ while not ("Open" in statuses):
 
 for i, course_id in enumerate(course_ids):
   if (statuses[i] == "Open"):
-    notif_title = course_id + ' IS OPEN'
-    notif_body = 'Your course %s is now open. Attempting to enroll.' % course_id
-    print(notif_title)
-    notify2.init(notif_title)
-    n = notify2.Notification(notif_title, notif_body)
-    n.show()
-
+    try:
+      notif_title = course_id + ' IS OPEN'
+      notif_body = 'Your course %s is now open. Attempting to enroll.' % course_id
+      print(notif_title)
+      notify2.init(notif_title)
+      n = notify2.Notification(notif_title, notif_body)
+      n.show()
+    except:
+      pass
+    
     try:
       browser.get(post_login_url)
       browser.switch_to.frame("ptifrmtgtframe")
