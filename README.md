@@ -3,6 +3,10 @@ Track a closed course on Zambeel automatically and enroll as soon as it opens na
 
 ![ss](ss.png)
 
+## Updates (v1.1):
+- Multiple course tracking, enrolls as soon as one of them is open
+- Notification issues fixed for Windows, ensuring complete compatibility
+
 ## Features:
 - Automatic refresh with random delays (5-20 minutes, can be altered). Only refreshes the page so it is perfectly safe.
 - Auto enroll course when it is found to be open, else just refresh the page.
